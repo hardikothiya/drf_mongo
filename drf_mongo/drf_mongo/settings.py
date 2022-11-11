@@ -10,11 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+import logging.config
 import os
+from django.utils.log import DEFAULT_LOGGING
+from colorlog import ColoredFormatter
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -27,7 +29,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'tutorials.apps.TutorialsConfig',
-
 
 ]
 
@@ -72,7 +72,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'drf_mongo.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -111,6 +110,88 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+DEFAULT_LOGGING_LEVEL = "DEBUG" if DEBUG else "INFO"
+
+# if DEBUG:
+#     # will output to your console
+#     logging.basicConfig(
+#         level=logging.INFO,
+#         format='%(asctime)s %(levelname)s %(message)s',
+#     )
+
+formatter = ColoredFormatter(
+    "%(log_color)s%(levelname)-8s%(reset)s %(blue)s%(message)s",
+    datefmt=None,
+    reset=True,
+    log_colors={
+        'DEBUG': 'cyan',
+        'INFO': 'green',
+        'WARNING': 'yellow',
+        'ERROR': 'red',
+        'CRITICAL': 'red,bg_white',
+    },
+    secondary_log_colors={},
+    style='%'
+)
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': "%(levelname)s  [%(asctime)s] [%(filename)s:%(lineno)s] %(message)s",
+            'datefmt': "%Y/%b/%d %H:%M:%S"
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },'colored': {
+
+        '()': 'colorlog.ColoredFormatter',
+        'format': " %(levelname)-8s %(log_color)s%(asctime)s %(cyan)s%(filename)s %(reset) s%(message)s",
+    }
+    },
+    'handlers': {
+        'django': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(str(BASE_DIR), 'django.log'),
+            'maxBytes': (1024 * 1024 * 10),
+            'backupCount': 10,
+            'formatter': 'colored',
+        },
+        'user': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(str(BASE_DIR), 'user.log'),
+            'maxBytes': 1024 * 1024 * 10,
+            'backupCount': 10,
+            'formatter': 'colored',
+        },
+        'console': {
+            'level': 'INFO',
+            # 'filename': os.path.join(str(BASE_DIR), 'user.log'),
+            'class': 'logging.StreamHandler',
+            # 'maxBytes': 1024 * 1024 * 10,
+            # 'backupCount': 10,
+            'formatter': 'colored'
+        },
+
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['user', 'console'],
+            'level': 'DEBUG',
+            'formatter': 'verbose'
+
+        },
+        'user': {
+            'handlers': ['user', 'console'],
+            'level': 'DEBUG',
+            'formatter': 'verbose'
+
+        },
+    },
+
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -124,7 +205,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

@@ -5,6 +5,9 @@ from rest_framework.views import APIView
 
 from django.http import JsonResponse
 from rest_framework.response import Response
+import logging
+
+logger = logging.getLogger('user')
 
 
 class TutorialList(APIView):
@@ -28,6 +31,7 @@ class TutorialList(APIView):
 
 
 class TutorialDetail(APIView):
+
     def get_object(self, pk):
         try:
             # print(User.objects.filter(id=pk))
@@ -38,6 +42,7 @@ class TutorialDetail(APIView):
     def get(self, request, pk):
         data = self.get_object(pk)
         tutorials_serializer = TutorialsSerializer(data, many=True, context={'request': request})
+        logger.error("GET data")
         return Response(tutorials_serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, pk):
@@ -53,7 +58,6 @@ class TutorialDetail(APIView):
         data = self.get_object(pk).first()
         if data is None:
             return Response({'message': 'No object Found'}, status=status.HTTP_200_OK)
-
         data.delete()
         return Response({'message': 'Tutorial was deleted successfully!'}, status=status.HTTP_200_OK)
 
