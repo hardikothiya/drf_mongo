@@ -143,11 +143,11 @@ LOGGING = {
         },
         'simple': {
             'format': '%(levelname)s %(message)s'
-        },'colored': {
-
-        '()': 'colorlog.ColoredFormatter',
-        'format': " %(levelname)-8s %(log_color)s%(asctime)s %(cyan)s%(filename)s %(reset) s%(message)s",
-    }
+        },
+        'colored': {
+            '()': 'colorlog.ColoredFormatter',
+            'format': " %(levelname)-8s %(log_color)s%(asctime)s %(cyan)s%(filename)s %(reset) s%(message)s",
+        }
     },
     'handlers': {
         'django': {

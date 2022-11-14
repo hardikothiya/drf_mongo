@@ -2,7 +2,6 @@ from rest_framework import status
 from .serializers import TutorialsSerializer
 from .models import Tutorials
 from rest_framework.views import APIView
-
 from django.http import JsonResponse
 from rest_framework.response import Response
 import logging
@@ -31,10 +30,8 @@ class TutorialList(APIView):
 
 
 class TutorialDetail(APIView):
-
     def get_object(self, pk):
         try:
-            # print(User.objects.filter(id=pk))
             return Tutorials.objects.filter(id=pk)
         except Tutorials.DoesNotExist:
             raise Tutorials
