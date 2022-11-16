@@ -146,7 +146,7 @@ LOGGING = {
         },
         'colored': {
             '()': 'colorlog.ColoredFormatter',
-            'format': " %(levelname)-8s %(log_color)s%(asctime)s %(cyan)s%(filename)s %(reset) s%(message)s",
+            'format': " %(levelname)-4s - %(log_color)s%(asctime)s %(cyan)s%(filename)s %(reset) s%(message)s",
         }
     },
     'handlers': {
