@@ -92,6 +92,18 @@ DATABASES = {
     }
 }
 
+
+# DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME': "testdb",
+#        'USER': 'postgres',
+#        'PASSWORD': 'hardik991322',
+#        'HOST': '127.0.0.1',
+#        'PORT': 5432,
+#    }
+# }
+
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -198,13 +210,13 @@ LOGGING = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
 USE_L10N = True
 
 USE_TZ = True
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
